@@ -277,7 +277,15 @@ serve -s build
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 Acknowledgments
+## � Authors
+
+**Project built by:**
+- **[Nishanth S V](https://github.com/nishanthsvbhat)** - Full-stack Development, ML Implementation, Cloud Deployment
+- **Hafid** - Co-developer, System Architecture, Testing & Optimization
+
+---
+
+## �🙏 Acknowledgments
 
 - **FastAPI**: For the excellent async web framework
 - **React**: For the powerful frontend library
