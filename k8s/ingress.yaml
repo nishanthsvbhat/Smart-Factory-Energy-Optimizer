@@ -1,0 +1,113 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: smart-factory-ingress
+  namespace: smart-factory
+  labels:
+    app: smart-factory
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/cors-allow-origin: "*"
+    nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST, OPTIONS"
+    nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range"
+    nginx.ingress.kubernetes.io/cors-expose-headers: "Content-Length,Content-Range"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    # Rate limiting
+    nginx.ingress.kubernetes.io/rate-limit: "100"
+    nginx.ingress.kubernetes.io/rate-limit-rps: "10"
+    # Security headers
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      add_header X-Frame-Options "SAMEORIGIN" always;
+      add_header X-XSS-Protection "1; mode=block" always;
+      add_header X-Content-Type-Options "nosniff" always;
+      add_header Referrer-Policy "no-referrer-when-downgrade" always;
+      add_header Content-Security-Policy "default-src 'self' http: https: data: blob: 'unsafe-inline'" always;
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: smart-factory.local
+    http:
+      paths:
+      # API routes
+      - path: /api(/|$)(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: backend-service
+            port:
+              number: 8000
+      # Frontend routes (catch-all)
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: frontend-service
+            port:
+              number: 80
+  # Optional: TLS configuration
+  # tls:
+  # - hosts:
+  #   - smart-factory.local
+  #   secretName: smart-factory-tls
+
+---
+# Optional: Alternative ingress for production with custom domain
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: smart-factory-ingress-prod
+  namespace: smart-factory
+  labels:
+    app: smart-factory
+    environment: production
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/cors-allow-origin: "https://your-domain.com"
+    nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST, OPTIONS"
+    nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization"
+    nginx.ingress.kubernetes.io/cors-expose-headers: "Content-Length,Content-Range"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    # Enhanced rate limiting for production
+    nginx.ingress.kubernetes.io/rate-limit: "200"
+    nginx.ingress.kubernetes.io/rate-limit-rps: "20"
+    # Security headers for production
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+      add_header X-Frame-Options "SAMEORIGIN" always;
+      add_header X-XSS-Protection "1; mode=block" always;
+      add_header X-Content-Type-Options "nosniff" always;
+      add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+      add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'" always;
+    # Certificate manager for automatic TLS
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: your-domain.com
+    http:
+      paths:
+      # API routes
+      - path: /api(/|$)(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: backend-service
+            port:
+              number: 8000
+      # Frontend routes (catch-all)
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: frontend-service
+            port:
+              number: 80
+  tls:
+  - hosts:
+    - your-domain.com
+    secretName: smart-factory-tls-prod

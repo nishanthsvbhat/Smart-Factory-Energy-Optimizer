@@ -1,0 +1,58 @@
+# Multi-stage build for React frontend
+FROM node:20-alpine as builder
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files first (for better caching)
+COPY frontend/package*.json ./
+
+# Install dependencies
+RUN npm install --omit=dev
+
+# Copy source code
+COPY frontend/ .
+
+# Build the application
+RUN npm run build
+
+# Production stage with nginx
+FROM nginx:alpine
+
+# Install security updates
+RUN apk update && apk upgrade && apk add --no-cache \
+    dumb-init \
+    && rm -rf /var/cache/apk/*
+
+# Create non-root user
+RUN addgroup -g 1001 -S app && \
+    adduser -S app -u 1001
+
+# Copy built application
+COPY --from=builder /app/build /usr/share/nginx/html
+
+# Copy custom nginx configuration
+COPY docker/nginx.conf /etc/nginx/nginx.conf
+
+# Create nginx cache and log directories
+RUN mkdir -p /var/cache/nginx/client_temp && \
+    mkdir -p /var/log/nginx && \
+    chown -R app:app /var/cache/nginx && \
+    chown -R app:app /var/log/nginx && \
+    chown -R app:app /usr/share/nginx/html
+
+# Switch to non-root user
+USER app
+
+# Expose port
+EXPOSE 80
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
+    CMD wget --no-verbose --tries=1 --spider http://localhost:80/ || exit 1
+
+# Use dumb-init to handle signals properly
+ENTRYPOINT ["dumb-init", "--"]
+
+# Start nginx
+CMD ["nginx", "-g", "daemon off;"]
