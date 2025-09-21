@@ -13,7 +13,10 @@ export default function Dashboard() {
       const hour = date.getHours();
       const day = date.getDate();
 
-      const response = await fetch("http://localhost:8000/predict", {
+      // Use environment variable for API URL, with fallback
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+      
+      const response = await fetch(`${apiUrl}/predict`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
