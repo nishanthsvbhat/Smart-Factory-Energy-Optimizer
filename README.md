@@ -2,7 +2,7 @@
 
 [![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen)](https://smart-factory-energy-optimizer.vercel.app)
 [![Backend API](https://img.shields.io/badge/Backend-API-blue)](https://smart-factory-energy-optimizer.onrender.com)
-[![## 👥 Aut## 👥 Author## 🙏 Acknowledgments
+[![## 👥 Aut## 👥 Author## ---ts
 
 - **FastAPI**: For the excellent async web framework
 - **React**: For the powerful frontend library
@@ -298,8 +298,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## � Authors
 
 **Project built by:**
-- **[Nishanth S V](https://github.com/nishanthsvbhat)** - Full-stack Development, ML Implementation, Cloud Deployment
-- **Hafid** - Co-developer, System Architecture, Testing & Optimization
+- **[Nishanth S V](https://github.com/nishanthsvbhat)**
+- **[Hafid](https://github.com/hafidars)**
 
 ---
 
