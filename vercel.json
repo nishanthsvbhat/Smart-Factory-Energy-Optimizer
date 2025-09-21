@@ -2,10 +2,6 @@
   "version": 2,
   "builds": [
     {
-      "src": "backend/app.py",
-      "use": "@vercel/python"
-    },
-    {
       "src": "frontend/package.json",
       "use": "@vercel/static-build",
       "config": {
@@ -15,20 +11,8 @@
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "/backend/app.py"
-    },
-    {
       "src": "/(.*)",
-      "dest": "/frontend/$1"
+      "dest": "/index.html"
     }
-  ],
-  "env": {
-    "CORS_ORIGINS": "*"
-  },
-  "functions": {
-    "backend/app.py": {
-      "runtime": "python3.9"
-    }
-  }
+  ]
 }
