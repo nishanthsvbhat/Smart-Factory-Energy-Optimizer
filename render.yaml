@@ -4,7 +4,7 @@ services:
   - type: web
     name: smart-factory-api
     runtime: python3
-    buildCommand: chmod +x build.sh && ./build.sh
+    buildCommand: pip install --upgrade pip && pip install -r backend/requirements.txt
     startCommand: cd backend && uvicorn app:app --host 0.0.0.0 --port $PORT
     plan: free
     branch: main
