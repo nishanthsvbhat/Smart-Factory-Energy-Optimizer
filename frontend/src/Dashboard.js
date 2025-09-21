@@ -16,6 +16,8 @@ export default function Dashboard() {
       // Use environment variable for API URL, with fallback
       const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8000';
       
+      console.log('Attempting to connect to:', apiUrl);
+      
       const response = await fetch(`${apiUrl}/predict`, {
         method: "POST",
         headers: {
@@ -44,7 +46,13 @@ export default function Dashboard() {
       }
     } catch (error) {
       console.error("Prediction failed:", error);
-      setRecommendation("Error: Unable to get prediction. Please check backend connection.");
+      console.error("API URL was:", process.env.REACT_APP_API_URL || 'http://localhost:8000');
+      
+      if (error.message.includes('fetch')) {
+        setRecommendation("⚠️ Backend not connected. Please deploy the backend first or check the API URL in environment variables.");
+      } else {
+        setRecommendation("Error: Unable to get prediction. Please check backend connection.");
+      }
     } finally {
       setLoading(false);
     }
