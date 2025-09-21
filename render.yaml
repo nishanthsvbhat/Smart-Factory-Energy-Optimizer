@@ -1,3 +1,5 @@
+name: smart-factory-energy-optimizer-blueprint
+
 services:
   - type: web
     name: smart-factory-api
