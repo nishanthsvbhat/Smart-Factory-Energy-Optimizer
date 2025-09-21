@@ -2,7 +2,20 @@
 
 [![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen)](https://smart-factory-energy-optimizer.vercel.app)
 [![Backend API](https://img.shields.io/badge/Backend-API-blue)](https://smart-factory-energy-optimizer.onrender.com)
-[![Python](https://img.shields.io/badge/Python-3.11+-blue)](https://www.python.org/)
+[![## 👥 Aut## 👥 Authors
+
+**Project built by:**
+- **[Nishanth S V](https://github.com/nishanthsvbhat)**
+- **[Hafid](https://github.com/hafidars)** 🙏 Acknowledgments
+
+- **FastAPI**: For the excellent async web framework
+- **React**: For the powerful frontend library
+- **Vercel & Render**: For reliable cloud hosting
+- **Scikit-learn**: For machine learning capabilities
+
+--- built by:**
+- **[Nishanth S V](https://github.com/nishanthsvbhat)**
+- **Hafid**n](https://img.shields.io/badge/Python-3.11+-blue)](https://www.python.org/)
 [![React](https://img.shields.io/badge/React-18+-blue)](https://reactjs.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-Latest-green)](https://fastapi.tiangolo.com/)
 
