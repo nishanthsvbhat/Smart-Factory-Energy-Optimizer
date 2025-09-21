@@ -14,4 +14,4 @@ echo "Python version: $(python --version)"
 echo "Starting server on $HOST:$PORT"
 
 # Start the FastAPI application
-exec uvicorn app:app --host $HOST --port $PORT --workers 1
+exec uvicorn app_precomputed:app --host $HOST --port $PORT --workers 1
